@@ -30,10 +30,10 @@ function App() {
                 {showRegister ? 'Registrarse' : 'Iniciar Sesión'}
             </h2>
             { !showRegister ? ( 
-                <form className='flex flex-col justify-items-center gap-4 w-1/2'>
-                    <input type="text" placeholder="Usuario" className='p-2 border rounded' />
-                    <input type="password" placeholder="Contraseña" className='p-2 border rounded' />
-                    <button type="submit" className='bg-grissThema text-salmonThema px-4 py-2 hover:bg-salmonThema/80 transition-colors hover:text-white rounded-xl font-semibold cursor-pointer'>
+                <form className='flex flex-col justify-center items-center gap-4 w-1/2'>
+                    <input type="text" placeholder="Usuario" className='p-2 border rounded w-full' />
+                    <input type="password" placeholder="Contraseña" className='p-2 border rounded w-full' />
+                    <button type="submit" className='bg-grissThema text-salmonThema px-4 py-2 hover:bg-salmonThema/80 transition-colors hover:text-white rounded-xl font-semibold cursor-pointer w-32'>
                         Iniciar Sesión
                     </button>
                 </form>

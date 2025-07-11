@@ -13,50 +13,14 @@ const RegisterForm = ({ setShowRegister }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col justify-items-center gap-1 w-1/2">
-        <label className="text-salmonThema">
-            Nombre de usuario:
-            <input
-            type="text"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-            className="p-2 border rounded"
-            />
-        </label>
-        <br />
-        <label className="text-salmonThema">
-            Correo electrónico:
-            <input
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            className="p-2 border rounded"
-            />
-        </label>
-        <br />
-        <label className="text-salmonThema">
-            Contraseña:
-            <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            className="p-2 border rounded"
-            />
-        </label>
-        <br />
-        <label className="text-salmonThema">
-            Confirmar contraseña:
-            <input
-            type="password"
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
-            className="p-2 border rounded"
-            />
-        </label>
-        <br />
+    <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center gap-4 w-1/2">
+        <input type="text" placeholder="Usuario" value={username} onChange={(event) => setUsername(event.target.value)} className="p-2 border rounded w-full" />
+        <input type="email" placeholder="Correo electrónico" value={email} onChange={(event) => setEmail(event.target.value)} className="p-2 border rounded w-full" />
+        <input type="password" placeholder="Contraseña" value={password} onChange={(event) => setPassword(event.target.value)} className="p-2 border rounded w-full" />
+        <input type="password" placeholder="Confirmar contraseña" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} className="p-2 border rounded w-full" />
         <button
             type="submit"
-            className="bg-grissThema text-salmonThema px-4 py-2 hover:bg-salmonThema/80 transition-colors hover:text-white rounded-xl font-semibold cursor-pointer"
+            className="bg-grissThema text-salmonThema px-4 py-2 hover:bg-salmonThema/80 transition-colors hover:text-white rounded-xl font-semibold cursor-pointer w-32"
         >
             Registrar
         </button>
