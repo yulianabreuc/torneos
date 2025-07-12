@@ -1,11 +1,58 @@
 import '../styles/App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import imgIniciarsesion from '../assets/imgIniciarsesion.png'
 import RegisterForm from '../components/RegisterForm.jsx'
+import axios from 'axios';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
+  const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false);
+
+  const sesionLoginSuccess = (data) => {
+    console.log('Inicio de sesión exitoso:', data);
+    setMessage(data.exito);
+    setIsError(false);
+  };
+  
+  const closeModal = () => {
+    setMessage('');
+    setIsError(false);
+  };
+
+  const hasError = (message) => {
+    console.error('Error:', message);
+    setMessage(''); // Limpiar primero para forzar re-render
+    setTimeout(() => {
+      setMessage(message);
+      setIsError(true);
+    }, 10);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const Usuario = event.target[0].value;
+    const Contrasena = event.target[1].value;
+    //validar que los campos no esten vacios
+    if (!Usuario || !Contrasena) {
+      hasError('Todos los campos son obligatorios');
+      return;
+    } else {
+      axios.post('http://127.0.0.1:30000/sesion/login', { Usuario, Contrasena })
+        .then(response => {
+          console.log(response.data);
+          setShowLogin(false);
+          sesionLoginSuccess(response.data);
+        })
+        .catch(error => {
+          console.log(error)
+          hasError(error.response.data.message || 'Error al iniciar sesión');
+        });
+      console.log('Formulario enviado:', { Usuario, Contrasena });
+
+    }
+  };
 
   return (
     <>
@@ -30,7 +77,7 @@ function App() {
                 {showRegister ? 'Registrarse' : 'Iniciar Sesión'}
             </h2>
             { !showRegister ? ( 
-                <form className='flex flex-col justify-center items-center gap-4 w-1/2'>
+                <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center gap-4 w-1/2'>
                     <input type="text" placeholder="Usuario" className='p-2 border rounded w-full' />
                     <input type="password" placeholder="Contraseña" className='p-2 border rounded w-full' />
                     <button type="submit" className='bg-grissThema text-salmonThema px-4 py-2 hover:bg-salmonThema/80 transition-colors hover:text-white rounded-xl font-semibold cursor-pointer w-32'>
@@ -38,10 +85,26 @@ function App() {
                     </button>
                 </form>
             ) : (
-                <RegisterForm setShowRegister={setShowRegister} />
+                <RegisterForm setShowRegister={setShowRegister} sesionLoginSuccess={sesionLoginSuccess} hasError={hasError} />
             )}
             <button className='mt-4 text-salmonThema underline cursor-pointer hover:text-white' onClick={() => setShowRegister(!showRegister)}>
               {showRegister ? 'Iniciar Sesión' : 'Registrarse'}
+            </button>
+          </div>
+        </div>
+      )}
+      {message && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50"
+          style={{ background: 'rgba(0,0,0,0.5)' }}
+        >
+          <div className={`bg-white rounded-lg shadow-lg p-8 max-w-md w-full flex flex-col items-center ${isError ? 'text-red-900' : 'text-green-900'}`}>
+            <h3 className="text-xl font-bold mb-4">{message}</h3>
+            <button
+              className="mt-2 bg-salmonThema text-white px-6 py-2 rounded hover:bg-salmonThema/80 transition-colors"
+              onClick={closeModal}
+            >
+              Cerrar
             </button>
           </div>
         </div>
@@ -51,4 +114,3 @@ function App() {
 }
 
 export default App
-

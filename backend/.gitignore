@@ -1,0 +1,29 @@
+/*************  ✨ Windsurf Command ⭐  *************/
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+
+# Production build
+dist/
+build/
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+/*******  133200e5-4371-40be-82d0-99f1d7e15764  *******/
