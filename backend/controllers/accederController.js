@@ -1,4 +1,7 @@
 const usuarioModel = require('../models/usuarios_model.js');
+const competenciasModel = require('../models/competencias_models.js');
+const registrosModel = require('../models/registros_model.js');
+const inscripcionesModel = require('../models/inscripciones_model.js');
 const bcryptjs = require('bcryptjs')
 const jtw = require('jsonwebtoken')
 
@@ -16,12 +19,11 @@ class accederControllers {
             if (!acceder.Usuario || !acceder.Contrasena) {
                 throw new ErrorDetallado('Datos de entrada incorrecto o faltante',400)
             }
-            const db = await usuarioModel.find({'correo':acceder.Usuario});
+            const db = await usuarioModel.find({'usuario':acceder.Usuario});
             if (db.length < 1) {
                 throw new ErrorDetallado('Usuario no encontrado',401)
-            }else if (db.length >= 2){
-                throw new ErrorDetallado('Usuario registrado mas de una vez',404)
             }
+
             const resultado = db[0]
             //encriptado
             const verificarContraseña = await bcryptjs.compare(acceder.Contrasena, resultado.contrasena)
@@ -51,18 +53,24 @@ class accederControllers {
             if (db.length != 0) {
                 throw new ErrorDetallado('Correo ya esta en uso',404)
             }
+            //buscar que no exista el usuario
+            const dbUsuario = await usuarioModel.find({'usuario':registrar.Usuario});
+            if (dbUsuario.length != 0) {
+                throw new ErrorDetallado('Usuario ya esta en uso',404)
+            }
+            //encriptado    
             const salt =Number(process.env.salt) || await bcryptjs.genSalt(8)
             const encriptado = await bcryptjs.hash(registrar.Contrasena, salt)
             //rol
-            let rol = 'cliente'
-            if (registrar.AdminCheck == true) {
-                if(registrar.AdminClave == 'admin'){
-                    rol='admin'
-                }else {
-                    throw new ErrorDetallado('Clave Admin incorrecta', 401)
-                }
+            let rol = 'userComun'
+            const crear = {
+                rol:rol,
+                nombre:registrar.Nombre,
+                apellido:registrar.Apellido,
+                contrasena:encriptado,
+                correo:registrar.Correo,
+                usuario:registrar.Usuario
             }
-            const crear = {rol:rol,nombre:registrar.Nombre,apellido:registrar.Apellido,contrasena:encriptado,cedula:registrar.Cedula,correo:registrar.Correo, usuario:registrar.Usuario}
             await usuarioModel.create(crear)
             res.status(200).send({exito:'Creado correctamente'})
         } catch (err) {

@@ -3,17 +3,34 @@ import { useState, useEffect } from 'react'
 import imgIniciarsesion from '../assets/imgIniciarsesion.png'
 import RegisterForm from '../components/RegisterForm.jsx'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
+
 
 function App() {
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
+  const navigate = useNavigate()
+
 
   const sesionLoginSuccess = (data) => {
     console.log('Inicio de sesión exitoso:', data);
-    setMessage(data.exito);
-    setIsError(false);
+    if (data.exito === true) {
+      setMessage('Inicio de sesión exitoso');
+      setIsError(false);
+      //guardar token en localStorage
+      localStorage.setItem('token', data.Token);
+      //guardar el rol en localStorage
+      localStorage.setItem('rol', data.rol);
+      //guardar el nombre en localStorage
+      localStorage.setItem('nombre', data.nombre);
+
+      navigate('/home')
+    } else {
+      setMessage(data.error);
+      setIsError(true);
+    }
   };
   
   const closeModal = () => {
@@ -41,13 +58,12 @@ function App() {
     } else {
       axios.post('http://127.0.0.1:30000/sesion/login', { Usuario, Contrasena })
         .then(response => {
-          console.log(response.data);
           setShowLogin(false);
           sesionLoginSuccess(response.data);
         })
         .catch(error => {
           console.log(error)
-          hasError(error.response.data.message || 'Error al iniciar sesión');
+          hasError(error.response.data.error || 'Error al iniciar sesión');
         });
       console.log('Formulario enviado:', { Usuario, Contrasena });
 
@@ -55,7 +71,7 @@ function App() {
   };
 
   return (
-    <>
+    <div className="flex flex-col items-center justify-center">
       {!showLogin ? (
         <div className='flex justify-center items-center h-full w-full p-4 flex-col gap-4'>
           <h1 className='text-6xl font-bold text-salmonThema'>Admin Torneos</h1>
@@ -68,9 +84,9 @@ function App() {
           </button>
         </div>
       ) : (
-        <div className='flex justify-center items-center h-full w-full p-4 border rounded-xl'>
+        <div className='flex justify-center items-center h-full w-10/12 p-4 border rounded-xl mt-8'>
           <div className='w-1/2'>
-            <img src={imgIniciarsesion} alt="Imagen" className='w-full h-full object-cover' />
+            <img src={imgIniciarsesion} alt="Imagen" className='w-full h-full object-cover p-4' />
           </div>
           <div className='w-1/2 p-6 flex flex-col justify-center items-center gap-4'>
             <h2 className='text-4xl font-bold text-salmonThema mb-4'>
@@ -109,7 +125,7 @@ function App() {
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }
 
