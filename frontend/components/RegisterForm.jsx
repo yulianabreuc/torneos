@@ -22,7 +22,7 @@ const RegisterForm = ({ setShowRegister, sesionLoginSuccess, hasError }) => {
         hasError('Las contraseñas no coinciden');
         return;
       } else {
-        axios.post('http://127.0.0.1:30000/sesion/register', { Usuario, Nombre, Apellido, Correo, Contrasena, ConfirmarContrasena })
+        axios.post('http://127.0.0.1:3000/sesion/register', { Usuario, Nombre, Apellido, Correo, Contrasena, ConfirmarContrasena })
           .then(response => {
             console.log(response.data);
             setShowRegister(false);

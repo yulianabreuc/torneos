@@ -6,7 +6,12 @@ const cors = require('cors')
 app.use(express.json());
 app.use(cors());
 const accederRouter = require('./routes/acceder')
+const competenciasRouter = require('./routes/competencias')
+const participantesRouter = require('./routes/participantes')
+
 app.use('/sesion', accederRouter);
+app.use('/api/competencias', competenciasRouter);
+app.use('/api/participantes', participantesRouter);
 //base de datos
 var db = require('./conexion/conexion');
 
@@ -24,7 +29,7 @@ app.get('/', (req, res) => {
 
 db();
 
-const PORT = process.env.PORT || 30000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });

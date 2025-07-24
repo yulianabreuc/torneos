@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const navLinks = [
     { label: 'Home', path: '/home' },
@@ -10,6 +10,7 @@ const navLinks = [
 
 const Navbar = () => {
     const [collapsed, setCollapsed] = useState(false)
+    const location = useLocation()
     let role = ''
     if (typeof window !== 'undefined') {
         role = localStorage.getItem('rol') || ''
@@ -38,19 +39,16 @@ const Navbar = () => {
                     width: collapsed ? '4rem' : '220px'
                 }}
             >
-                {/* Botón hamburguesa alineado arriba a la derecha dentro del navbar */}
                 <button
                     className="absolute top-4 right-4 z-50 bg-salmonThema text-white rounded-full p-2 shadow-md transition-transform duration-300"
                     onClick={() => setCollapsed(!collapsed)}
                     aria-label={collapsed ? 'Mostrar menú' : 'Ocultar menú'}
                 >
                     {collapsed ? (
-                        // Icono hamburguesa
                         <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     ) : (
-                        // Icono flecha izquierda
                         <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M15 6l-6 6 6 6" />
                         </svg>
@@ -61,7 +59,9 @@ const Navbar = () => {
                         <Link
                             key={link.path}
                             to={link.path}
-                            className="block w-full px-6 py-3 rounded-md font-medium hover:bg-[#37474f] transition-colors"
+                            className={`block w-full px-6 py-3 rounded-md font-medium transition-colors ${
+                                location.pathname === link.path ? 'bg-[#37474f]' : 'hover:bg-[#37474f]'
+                            }`}
                         >
                             {link.label}
                         </Link>

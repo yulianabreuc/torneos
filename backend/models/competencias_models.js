@@ -9,15 +9,22 @@ const competenciasSchema = new mongoose.Schema(
         descripcion: {
             type: String
         },
-        fecha_inicio: {
+        fecha_competencia: {
             type: Date
         },
-        fecha_fin: {
+        fecha_limite_inscripcion: {
             type: Date
         },
         estado: {
             type: String
-        }
+        },
+        total_participantes: {
+            type: Number
+        },
+        participantes: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'usuarios'
+        }]
     },
     {
         versionKey: false

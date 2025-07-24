@@ -1,5 +1,4 @@
 const usuarioModel = require('../models/usuarios_model.js');
-const competenciasModel = require('../models/competencias_models.js');
 const registrosModel = require('../models/registros_model.js');
 const inscripcionesModel = require('../models/inscripciones_model.js');
 const bcryptjs = require('bcryptjs')

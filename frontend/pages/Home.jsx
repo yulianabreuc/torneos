@@ -56,7 +56,7 @@ function App() {
       hasError('Todos los campos son obligatorios');
       return;
     } else {
-      axios.post('http://127.0.0.1:30000/sesion/login', { Usuario, Contrasena })
+      axios.post('http://127.0.0.1:3000/sesion/login', { Usuario, Contrasena })
         .then(response => {
           setShowLogin(false);
           sesionLoginSuccess(response.data);
