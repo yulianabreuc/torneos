@@ -4,7 +4,10 @@ class competenciasController {
 
     async getCompetencias(req, res, next) {
         try {
-            const competencias = await competenciasModel.find();
+            const competencias = await competenciasModel.find().populate({
+                path: 'participantes',
+                model: 'participantes'
+            });
             res.status(200).send(competencias);
         } catch (err) {
             console.error(err);
