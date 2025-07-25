@@ -108,7 +108,7 @@ const Competencias = () => {
       setOptions('list');
       setSelectedCompetencia(null);
     } catch (err) {
-      hasError(err.message)
+      setMessage(err.response.data.error);
     }
   }
 
@@ -129,7 +129,7 @@ const Competencias = () => {
       setIsError(false);
       participanteCompetencia(response.data._id)
     } catch (err) {
-      hasError(err.message)
+      setMessage(err.response.data.error);
     }
   }
   const participanteCompetencia = async (idParticipante, directo) => {
@@ -154,7 +154,7 @@ const Competencias = () => {
         setIsError(false);
       }
     } catch (err) {
-      hasError(err.message)
+      setMessage(err.response.data.error);
     }
   }
   const handleEliminarParticipanteQuestion = (idParticipante) => {
@@ -178,7 +178,7 @@ const Competencias = () => {
       setMessage('Participante eliminado exitosamente');
       setIsError(false);      
     } catch (err) {
-      hasError(err.message)
+      setMessage(err.response.data.error);
     }
   }
 

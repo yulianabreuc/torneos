@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const registrosSchema = new mongoose.Schema(
     {
         id: mongoose.Schema.ObjectId,
-        usuario_id: {
+        participantes_id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'usuarios'
+            ref: 'participantes'
         },
         competencia_id: {
             type: mongoose.Schema.Types.ObjectId,

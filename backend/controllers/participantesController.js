@@ -26,6 +26,12 @@ class participantesControllers {
             categoria
         }
         try {
+            const existingParticipante = await participantesModel.findOne({
+                $or: [{ correo }, { cedula }]
+            });
+            if (existingParticipante) {
+                return res.status(400).send({ error: 'Correo o cédula ya está en uso' });
+            }
             const participanteCreado = await participantesModel.create(newParticipante);
             res.status(201).send(participanteCreado);
         } catch (err) {
@@ -83,6 +89,46 @@ class participantesControllers {
         } catch (err) {
             console.error(err);
             res.status(500).send({ error: 'Error al eliminar el participante de la competencia' });
+        }
+    }
+
+    async deleteParticipante(req, res, next) {
+        let { id } = req.params;
+        try {
+            //convertir id en ObjectId
+            const ObjectId = require('mongoose').Types.ObjectId;
+            id = new ObjectId(id);
+            const participanteEliminado = await participantesModel.findByIdAndDelete(id);
+            res.status(200).send(participanteEliminado);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ error: 'Error al eliminar el participante' });
+        }
+    }
+
+    async updateParticipante(req, res, next) {
+        let { id } = req.params;
+        const { nombre, apellido, correo, cedula, telefono, edad, sexo, pais, categoria } = req.body;
+        const newParticipante = {
+            nombre,
+            apellido,
+            correo,
+            cedula,
+            telefono,
+            edad,
+            sexo,
+            pais,
+            categoria
+        }
+        try {
+            //convertir id en ObjectId
+            const ObjectId = require('mongoose').Types.ObjectId;
+            id = new ObjectId(id);
+            const participanteActualizado = await participantesModel.findByIdAndUpdate(id, newParticipante, { new: true });
+            res.status(200).send(participanteActualizado);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ error: 'Error al actualizar el participante' });
         }
     }
 

@@ -8,10 +8,14 @@ app.use(cors());
 const accederRouter = require('./routes/acceder')
 const competenciasRouter = require('./routes/competencias')
 const participantesRouter = require('./routes/participantes')
+const registrosRouter = require('./routes/registros')
+const searchRouter = require('./routes/search')
 
 app.use('/sesion', accederRouter);
 app.use('/api/competencias', competenciasRouter);
 app.use('/api/participantes', participantesRouter);
+app.use('/api/registros', registrosRouter);
+app.use('/api/search', searchRouter)
 //base de datos
 var db = require('./conexion/conexion');
 

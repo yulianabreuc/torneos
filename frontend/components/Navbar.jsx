@@ -5,7 +5,7 @@ const navLinks = [
     { label: 'Home', path: '/home' },
     { label: 'Competencias', path: '/competencias' },
     { label: 'Records', path: '/records' },
-    { label: 'Mi Perfil', path: '/perfil' }
+    //{ label: 'Mi Perfil', path: '/perfil' }
 ]
 
 const Navbar = () => {
